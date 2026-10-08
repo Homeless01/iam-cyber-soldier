@@ -1,191 +1,377 @@
-function Contact() {
+import { useState } from 'react'
+
+function Contact({ selectedProgram }) {
+  const [prevProgram, setPrevProgram] = useState(selectedProgram)
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    program: selectedProgram?.name || '',
+    message: '',
+  })
+  const [submitted, setSubmitted] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
+
+  if (selectedProgram !== prevProgram) {
+    setPrevProgram(selectedProgram)
+    if (selectedProgram?.name) {
+      setFormData((prev) => ({ ...prev, program: selectedProgram.name }))
+      setSubmitted(false)
+    }
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+    if (errorMsg) setErrorMsg('')
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    const trimmedName = formData.name.trim()
+    const trimmedPhone = formData.phone.trim()
+    const trimmedEmail = formData.email.trim()
+
+    if (!trimmedName || !trimmedPhone || !trimmedEmail) {
+      setErrorMsg('Please provide your name, phone number, and email address.')
+      return
+    }
+
+    // Standard 10-digit Indian mobile number validation (allowing optional +91, 91, or 0 prefix, spaces, dashes)
+    const cleanPhone = trimmedPhone.replace(/[\s\-()]/g, '')
+    const phoneRegex = /^(?:\+?91|0)?[6-9]\d{9}$/
+    if (!phoneRegex.test(cleanPhone)) {
+      setErrorMsg('Please enter a valid 10-digit mobile number (e.g., 98765 43210 or +91 98765 43210).')
+      return
+    }
+
+    // Practical email validation checking local part, @, domain, and valid TLD
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if (!emailRegex.test(trimmedEmail)) {
+      setErrorMsg('Please enter a valid email address (e.g., user@example.com).')
+      return
+    }
+
+    setErrorMsg('')
+    setSubmitted(true)
+  }
+
+  const handleReset = () => {
+    setSubmitted(false)
+    setFormData({
+      name: '',
+      phone: '',
+      email: '',
+      program: '',
+      message: '',
+    })
+  }
+
   return (
     <section
       id="contact"
-      className="relative overflow-hidden border-t border-gray-200 bg-white py-24 transition-colors duration-500 dark:border-white/10 dark:bg-[#05070a]"
+      className="relative overflow-hidden border-t border-slate-200 bg-slate-50/50 py-20 transition-colors duration-300 sm:py-24 dark:border-white/10 dark:bg-[#05070a]"
     >
-      <div className="absolute left-1/2 top-0 h-80 w-80 -translate-x-1/2 rounded-full bg-cyan-400/10 blur-[120px]" />
+      {/* Background cyber ambient glow */}
+      <div className="pointer-events-none absolute -bottom-10 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[140px] dark:bg-cyan-500/15" />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-start">
+          {/* Left Column: Direct Contact Information (5 cols) */}
+          <div className="lg:col-span-5">
+            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/5 px-3.5 py-1 text-xs font-bold uppercase tracking-[0.25em] text-cyan-700 dark:border-cyan-400/20 dark:bg-cyan-400/10 dark:text-cyan-400">
+              Get in Touch
+            </div>
 
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
-
-          {/* Contact Information */}
-          <div>
-
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-cyan-600 dark:text-cyan-400">
-              Start Your Journey
-            </p>
-
-            <h2 className="mt-4 text-4xl font-black tracking-tight text-gray-950 transition-colors duration-500 sm:text-5xl dark:text-white">
-              Ready to build
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl dark:text-white">
+              Ready to Build{' '}
               <span className="text-cyan-600 dark:text-cyan-400">
-                {' '}
-                real skills?
+                Real Skills?
               </span>
             </h2>
 
-            <p className="mt-6 max-w-xl text-lg font-medium leading-8 text-gray-700 transition-colors duration-500 dark:text-gray-300">
-              Talk to the training team to understand the available programs,
-              plans and learning options.
+            <p className="mt-5 max-w-md text-base font-normal leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
+              Have questions about program schedules, fees, or industrial curriculum? Reach out directly or submit your enquiry.
             </p>
 
-            <div className="mt-10 space-y-4">
-
-              {/* Phone */}
+            {/* Direct Contact Cards */}
+            <div className="mt-8 space-y-4">
+              {/* Phone Card */}
               <a
                 href="tel:+919588699836"
-                className="flex items-center gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 transition-all duration-300 hover:border-cyan-400/40 hover:bg-white hover:shadow-[0_10px_30px_rgba(34,211,238,0.06)] dark:border-white/10 dark:bg-[#0a0f14] dark:hover:border-cyan-400/25"
+                className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4.5 shadow-xs transition-all duration-300 hover:border-cyan-500/50 hover:shadow-md dark:border-white/10 dark:bg-[#0a0f16] dark:hover:border-cyan-400/30 dark:hover:bg-[#0c141d]"
               >
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-400/10 font-bold text-cyan-700 dark:text-cyan-400">
-                  ☎
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-cyan-500/20 bg-cyan-500/10 text-cyan-700 transition group-hover:scale-105 group-hover:bg-cyan-400 group-hover:text-slate-950 dark:text-cyan-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  >
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
                 </div>
 
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    Phone
+                <div className="min-w-0">
+                  <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    Direct Call / WhatsApp
                   </p>
-
-                  <p className="mt-1 font-bold text-gray-950 dark:text-white">
+                  <p className="mt-0.5 text-base font-extrabold text-slate-950 transition group-hover:text-cyan-600 dark:text-white dark:group-hover:text-cyan-400">
                     +91 95886 99836
                   </p>
                 </div>
               </a>
 
-              {/* Email */}
+              {/* Email Card */}
               <a
                 href="mailto:training.support@iamcybersoldier.com"
-                className="flex items-center gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 transition-all duration-300 hover:border-cyan-400/40 hover:bg-white hover:shadow-[0_10px_30px_rgba(34,211,238,0.06)] dark:border-white/10 dark:bg-[#0a0f14] dark:hover:border-cyan-400/25"
+                className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4.5 shadow-xs transition-all duration-300 hover:border-cyan-500/50 hover:shadow-md dark:border-white/10 dark:bg-[#0a0f16] dark:hover:border-cyan-400/30 dark:hover:bg-[#0c141d]"
               >
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-400/10 font-bold text-cyan-700 dark:text-cyan-400">
-                  @
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-cyan-500/20 bg-cyan-500/10 text-cyan-700 transition group-hover:scale-105 group-hover:bg-cyan-400 group-hover:text-slate-950 dark:text-cyan-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  >
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
                 </div>
 
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    Training Support
+                <div className="min-w-0">
+                  <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                    Training Support Email
                   </p>
-
-                  <p className="mt-1 font-bold text-gray-950 dark:text-white">
+                  <p className="mt-0.5 truncate text-sm font-extrabold text-slate-950 transition group-hover:text-cyan-600 dark:text-white dark:group-hover:text-cyan-400">
                     training.support@iamcybersoldier.com
                   </p>
                 </div>
               </a>
+            </div>
 
+            {/* Quick Hours / Focus info */}
+            <div className="mt-6 rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-xs dark:border-white/5 dark:bg-white/[0.02]">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                <span className="font-mono text-xs font-bold text-slate-800 dark:text-slate-200">
+                  Admissions &amp; Consultation Active
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                Batches forming regularly for CEH, Splunk, SOC, CompTIA, and AI Security tracks.
+              </p>
             </div>
           </div>
 
-          {/* Enquiry Form */}
-          <div className="rounded-3xl border border-gray-200 bg-gray-50 p-6 transition-colors duration-500 sm:p-8 dark:border-white/10 dark:bg-[#0a0f14]">
+          {/* Right Column: Enquiry Form (7 cols) */}
+          <div className="lg:col-span-7">
+            <div className="relative rounded-3xl border border-slate-200 bg-white p-6 shadow-xl dark:border-white/10 dark:bg-[#0a0f16] sm:p-8">
+              {submitted ? (
+                /* Success Confirmation State */
+                <div className="py-8 text-center">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500 dark:bg-emerald-500/20">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-8 w-8"
+                    >
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                      <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                  </div>
 
-            <div>
-              <h3 className="text-2xl font-bold text-gray-950 dark:text-white">
-                Send an enquiry
-              </h3>
+                  <h3 className="mt-5 text-2xl font-black text-slate-950 dark:text-white">
+                    Enquiry Prepared!
+                  </h3>
 
-              <p className="mt-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                Tell us what you're looking to learn.
-              </p>
+                  <p className="mx-auto mt-2.5 max-w-md text-sm text-slate-600 dark:text-slate-300">
+                    Thank you, <span className="font-bold text-slate-900 dark:text-white">{formData.name}</span>. For immediate counseling, feel free to call our direct line at{' '}
+                    <a href="tel:+919588699836" className="font-bold text-cyan-600 hover:underline dark:text-cyan-400">
+                      +91 95886 99836
+                    </a>{' '}
+                    or email us anytime.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="mt-6 rounded-xl border border-slate-300 bg-slate-100 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-800 transition hover:bg-slate-200 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
+                  >
+                    Submit Another Enquiry
+                  </button>
+                </div>
+              ) : (
+                /* Main Form */
+                <>
+                  <div>
+                    <h3 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white">
+                      Send an Enquiry
+                    </h3>
+                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                      Fill out your details to receive course curriculum and enrollment guidance.
+                    </p>
+                  </div>
+
+                  {errorMsg && (
+                    <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-xs font-medium text-red-600 dark:text-red-400">
+                      {errorMsg}
+                    </div>
+                  )}
+
+                  <form onSubmit={handleSubmit} noValidate className="mt-6 space-y-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {/* Full Name */}
+                      <div>
+                        <label
+                          htmlFor="fullName"
+                          className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                        >
+                          Full Name *
+                        </label>
+                        <input
+                          id="fullName"
+                          name="name"
+                          type="text"
+                          required
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="e.g. John Doe"
+                          className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 dark:border-white/10 dark:bg-[#070d14] dark:text-white dark:placeholder:text-slate-600 dark:focus:border-cyan-400"
+                        />
+                      </div>
+
+                      {/* Phone */}
+                      <div>
+                        <label
+                          htmlFor="phone"
+                          className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                        >
+                          Phone Number *
+                        </label>
+                        <input
+                          id="phone"
+                          name="phone"
+                          type="tel"
+                          required
+                          value={formData.phone}
+                          onChange={handleChange}
+                          placeholder="+91 98765 43210"
+                          className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 dark:border-white/10 dark:bg-[#070d14] dark:text-white dark:placeholder:text-slate-600 dark:focus:border-cyan-400"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Email */}
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                      >
+                        Email Address *
+                      </label>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="you@example.com"
+                        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 dark:border-white/10 dark:bg-[#070d14] dark:text-white dark:placeholder:text-slate-600 dark:focus:border-cyan-400"
+                      />
+                    </div>
+
+                    {/* Program Select */}
+                    <div>
+                      <label
+                        htmlFor="program"
+                        className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                      >
+                        Program of Interest
+                      </label>
+                      <select
+                        id="program"
+                        name="program"
+                        value={formData.program}
+                        onChange={handleChange}
+                        className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 transition outline-none focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 dark:border-white/10 dark:bg-[#070d14] dark:text-white dark:focus:border-cyan-400"
+                      >
+                        <option value="">Select a Cybersecurity Program (Optional)</option>
+                        <option value="Certified Ethical Hacker">Certified Ethical Hacker</option>
+                        <option value="Splunk Admin & Developer">Splunk Admin &amp; Developer</option>
+                        <option value="SOC Analyst 1">SOC Analyst 1</option>
+                        <option value="SOC Analyst 2">SOC Analyst 2</option>
+                        <option value="CompTIA Security+">CompTIA Security+</option>
+                        <option value="AI-Driven Cyber Security">AI-Driven Cyber Security</option>
+                      </select>
+                    </div>
+
+                    {/* Message */}
+                    <div>
+                      <label
+                        htmlFor="message"
+                        className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                      >
+                        Message / Learning Goals
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows="3"
+                        value={formData.message}
+                        onChange={handleChange}
+                        placeholder="Tell us about your background or questions..."
+                        className="w-full resize-none rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 transition outline-none placeholder:text-slate-400 focus:border-cyan-500 focus:bg-white focus:ring-2 focus:ring-cyan-500/20 dark:border-white/10 dark:bg-[#070d14] dark:text-white dark:placeholder:text-slate-600 dark:focus:border-cyan-400"
+                      />
+                    </div>
+
+                    {/* Submit CTA */}
+                    <button
+                      type="submit"
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-400 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-slate-950 transition-all duration-300 hover:bg-cyan-300 hover:shadow-[0_0_20px_rgba(34,211,238,0.35)] active:scale-98 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-500"
+                    >
+                      <span>Send Enquiry</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        className="h-4 w-4"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+
+                    <p className="text-center text-[11px] text-slate-500 dark:text-slate-400">
+                      Your privacy is protected. Direct training consultation only.
+                    </p>
+                  </form>
+                </>
+              )}
             </div>
-
-            <form className="mt-8 space-y-5">
-
-              <div className="grid gap-5 sm:grid-cols-2">
-
-                {/* Full Name */}
-                <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-800 dark:text-gray-200">
-                    Full Name
-                  </label>
-
-                  <input
-                    type="text"
-                    placeholder="Your name"
-                    className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-950 outline-none transition placeholder:text-gray-500 focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/20 dark:border-white/10 dark:bg-black/20 dark:text-white dark:placeholder:text-gray-400"
-                  />
-                </div>
-
-                {/* Phone */}
-                <div>
-                  <label className="mb-2 block text-sm font-semibold text-gray-800 dark:text-gray-200">
-                    Phone
-                  </label>
-
-                  <input
-                    type="tel"
-                    placeholder="+91"
-                    className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-950 outline-none transition placeholder:text-gray-500 focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/20 dark:border-white/10 dark:bg-black/20 dark:text-white dark:placeholder:text-gray-400"
-                  />
-                </div>
-
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-800 dark:text-gray-200">
-                  Email
-                </label>
-
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-950 outline-none transition placeholder:text-gray-500 focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/20 dark:border-white/10 dark:bg-black/20 dark:text-white dark:placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* Program */}
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-800 dark:text-gray-200">
-                  Program
-                </label>
-
-                <select
-                  className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-800 outline-none transition focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/20 dark:border-white/10 dark:bg-[#0b1015] dark:text-gray-200"
-                  defaultValue=""
-                >
-                  <option value="" disabled>
-                    Select a program
-                  </option>
-                  <option>Certified Ethical Hacker</option>
-                  <option>Splunk Admin & Developer</option>
-                  <option>SOC Analyst 1</option>
-                  <option>SOC Analyst 2</option>
-                  <option>CompTIA Security+</option>
-                  <option>AI-Driven Cyber Security</option>
-                </select>
-              </div>
-
-              {/* Message */}
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-800 dark:text-gray-200">
-                  Message
-                </label>
-
-                <textarea
-                  rows="4"
-                  placeholder="Tell us about your learning goals..."
-                  className="w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-950 outline-none transition placeholder:text-gray-500 focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/20 dark:border-white/10 dark:bg-black/20 dark:text-white dark:placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* Submit */}
-              <button
-                type="button"
-                className="w-full rounded-xl bg-cyan-400 px-5 py-3.5 font-bold text-black transition hover:bg-cyan-300 hover:shadow-[0_8px_30px_rgba(34,211,238,0.15)]"
-              >
-                Send Enquiry
-              </button>
-
-              <p className="text-center text-xs font-medium text-gray-600 dark:text-gray-400">
-                Enquiry submission will be connected to the backend later.
-              </p>
-
-            </form>
-
           </div>
-
         </div>
-
       </div>
     </section>
   )

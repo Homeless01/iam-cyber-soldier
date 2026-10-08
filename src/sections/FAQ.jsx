@@ -34,76 +34,121 @@ const faqs = [
 ]
 
 function FAQ() {
-  const [openIndex, setOpenIndex] = useState(null)
+  const [openIndex, setOpenIndex] = useState(0) // open the first by default for immediate engagement
+
+  const toggleAccordion = (index) => {
+    setOpenIndex(openIndex === index ? null : index)
+  }
 
   return (
     <section
       id="faq"
-      className="border-t border-gray-200 bg-white py-24 transition-colors duration-500 dark:border-white/10 dark:bg-[#070a0e]"
+      className="relative overflow-hidden border-t border-slate-200 bg-white py-20 transition-colors duration-300 sm:py-24 dark:border-white/10 dark:bg-[#070a0e]"
     >
-      <div className="mx-auto max-w-4xl px-6 lg:px-8">
-
-        {/* Header */}
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
         <div className="text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.3em] text-cyan-600 dark:text-cyan-400">
-            FAQ
-          </p>
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/20 bg-cyan-500/5 px-3.5 py-1 text-xs font-bold uppercase tracking-[0.25em] text-cyan-700 dark:border-cyan-400/20 dark:bg-cyan-400/10 dark:text-cyan-400">
+            Frequently Asked Questions
+          </div>
 
-          <h2 className="mt-4 text-4xl font-black tracking-tight text-gray-950 transition-colors duration-500 sm:text-5xl dark:text-white">
-            Questions,
+          <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl dark:text-white">
+            Questions,{' '}
             <span className="text-cyan-600 dark:text-cyan-400">
-              {' '}
-              answered.
+              Answered.
             </span>
           </h2>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg font-medium leading-8 text-gray-700 transition-colors duration-500 dark:text-gray-300">
-            Everything you need to know before starting your cybersecurity
-            learning journey.
+          <p className="mx-auto mt-4 max-w-xl text-base font-normal leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
+            Everything you need to know about our industrial training structure, eligibility, prerequisites, and certifications.
           </p>
         </div>
 
-        {/* FAQ List */}
-        <div className="mt-12 space-y-3">
+        {/* Accordion List */}
+        <div className="mt-12 space-y-3.5">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index
+            const questionId = `faq-q-${index}`
+            const answerId = `faq-a-${index}`
 
             return (
               <div
                 key={faq.question}
-                className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 transition-all duration-300 hover:border-cyan-400/30 dark:border-white/10 dark:bg-[#0a0f14]"
+                className={`overflow-hidden rounded-2xl border transition-all duration-200 ${
+                  isOpen
+                    ? 'border-cyan-500/40 bg-slate-50/90 shadow-sm dark:border-cyan-500/30 dark:bg-[#0c131c]'
+                    : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50 dark:border-white/10 dark:bg-[#0a0f16] dark:hover:border-white/20'
+                }`}
               >
                 <button
                   type="button"
-                  onClick={() =>
-                    setOpenIndex(isOpen ? null : index)
-                  }
-                  className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
+                  id={questionId}
+                  aria-expanded={isOpen}
+                  aria-controls={answerId}
+                  onClick={() => toggleAccordion(index)}
+                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-xl"
                 >
-                  <span className="font-bold text-gray-950 transition-colors duration-500 dark:text-white">
+                  <span className="text-base font-bold tracking-tight text-slate-900 transition-colors sm:text-lg dark:text-white">
                     {faq.question}
                   </span>
 
+                  {/* Clean SVG Expand/Collapse Icon */}
                   <span
-                    className="shrink-0 text-xl font-semibold text-cyan-600 dark:text-cyan-400"
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-all duration-300 ${
+                      isOpen
+                        ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-700 rotate-180 dark:text-cyan-400'
+                        : 'border-slate-200 bg-slate-50 text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-400'
+                    }`}
                     aria-hidden="true"
                   >
-                    {isOpen ? '−' : '+'}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      className="h-4 w-4"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
                   </span>
                 </button>
 
-                {isOpen && (
-                  <div className="border-t border-gray-200 px-6 py-5 dark:border-white/10">
-                    <p className="text-sm font-medium leading-7 text-gray-700 transition-colors duration-500 dark:text-gray-300">
-                      {faq.answer}
-                    </p>
+                <div
+                  id={answerId}
+                  role="region"
+                  aria-labelledby={questionId}
+                  className={`grid transition-all duration-300 ease-in-out ${
+                    isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="border-t border-slate-200/80 px-6 py-4.5 dark:border-white/10">
+                      <p className="text-sm font-normal leading-relaxed text-slate-700 dark:text-slate-300">
+                        {faq.answer}
+                      </p>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             )
           })}
         </div>
 
+        {/* Contact note below FAQ */}
+        <div className="mt-10 text-center">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
+            Have a different question?{' '}
+            <a
+              href="#contact"
+              className="font-bold text-cyan-700 hover:underline dark:text-cyan-400"
+            >
+              Contact our training advisors directly
+            </a>
+          </p>
+        </div>
       </div>
     </section>
   )

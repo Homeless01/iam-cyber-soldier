@@ -1,116 +1,190 @@
+import logo from '../assets/Logo.png'
+
 function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
-    <footer className="border-t border-gray-200 bg-white transition-colors duration-500 dark:border-white/10 dark:bg-[#030507]">
+    <footer className="border-t border-slate-200 bg-white transition-colors duration-300 dark:border-white/10 dark:bg-[#030508]">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
+          {/* Brand Info (5 cols) */}
+          <div className="lg:col-span-5">
+            <a href="#home" className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan-500/30 bg-[#060c14] p-1 shadow-xs">
+                <img
+                  src={logo}
+                  alt="I AM CYBER SOLDIER Shield"
+                  className="h-full w-full object-contain"
+                  width="40"
+                  height="40"
+                />
+              </div>
 
-      <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
-
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-
-          {/* Brand */}
-          <div className="lg:col-span-2">
-
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-cyan-400/30 bg-cyan-400/10">
-                <span className="font-black text-cyan-600 dark:text-cyan-400">
-                  I
+              <div className="flex flex-col leading-tight">
+                <span className="text-sm font-extrabold tracking-wider text-slate-950 dark:text-white">
+                  I AM CYBER
+                </span>
+                <span className="text-[11px] font-bold tracking-[0.22em] text-cyan-600 dark:text-cyan-400">
+                  SOLDIER
                 </span>
               </div>
+            </a>
 
-              <div>
-                <p className="text-sm font-bold tracking-wider text-gray-950 dark:text-white">
-                  I AM CYBER
-                </p>
-
-                <p className="text-xs font-bold tracking-[0.2em] text-cyan-600 dark:text-cyan-400">
-                  SOLDIER
-                </p>
-              </div>
-            </div>
-
-            <p className="mt-5 max-w-md text-sm font-medium leading-7 text-gray-700 dark:text-gray-300">
-              Hands-on Cyber Security and AI-driven training designed to
-              develop practical skills for the modern security landscape.
+            <p className="mt-4 max-w-sm text-sm font-normal leading-relaxed text-slate-600 dark:text-slate-400">
+              Cyber Security Industrial Training &amp; Internship. Empowering students, freshers, and professionals with 70% practical, hands-on offensive and defensive cybersecurity competencies.
             </p>
 
-          </div>
-
-          {/* Navigation */}
-          <div>
-            <h3 className="text-sm font-bold text-gray-950 dark:text-white">
-              Navigate
-            </h3>
-
-            <div className="mt-4 space-y-3">
-              <a
-                href="#home"
-                className="block text-sm font-medium text-gray-700 transition hover:text-cyan-600 dark:text-gray-300 dark:hover:text-cyan-400"
-              >
-                Home
-              </a>
-
-              <a
-                href="#programs"
-                className="block text-sm font-medium text-gray-700 transition hover:text-cyan-600 dark:text-gray-300 dark:hover:text-cyan-400"
-              >
-                Programs
-              </a>
-
-              <a
-                href="#plans"
-                className="block text-sm font-medium text-gray-700 transition hover:text-cyan-600 dark:text-gray-300 dark:hover:text-cyan-400"
-              >
-                Training Plans
-              </a>
-
-              <a
-                href="#trainer"
-                className="block text-sm font-medium text-gray-700 transition hover:text-cyan-600 dark:text-gray-300 dark:hover:text-cyan-400"
-              >
-                Trainer
-              </a>
+            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600 dark:border-white/5 dark:bg-white/[0.03] dark:text-slate-400">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+              <span>70% Practical + 30% Theory</span>
             </div>
           </div>
 
-          {/* Contact */}
-          <div>
-            <h3 className="text-sm font-bold text-gray-950 dark:text-white">
-              Contact
-            </h3>
+          {/* Programs Column (3 cols) */}
+          <div className="lg:col-span-3">
+            <p className="font-mono text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
+              Programs
+            </p>
+            <ul className="mt-4 space-y-2 text-sm">
+              <li>
+                <a
+                  href="#programs"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  Certified Ethical Hacker
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#programs"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  Splunk Admin &amp; Developer
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#programs"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  SOC Analyst 1
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#programs"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  SOC Analyst 2
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#programs"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  CompTIA Security+
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#programs"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  AI-Driven Cyber Security
+                </a>
+              </li>
+            </ul>
+          </div>
 
-            <div className="mt-4 space-y-3">
+          {/* Quick Links Column (2 cols) */}
+          <div className="lg:col-span-2">
+            <p className="font-mono text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
+              Navigation
+            </p>
+            <ul className="mt-4 space-y-2 text-sm">
+              <li>
+                <a
+                  href="#home"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#red-blue"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  Red &amp; Blue Team
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#plans"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  Training Plans
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#trainer"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  Trainer Profile
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#faq"
+                  className="text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
+                >
+                  FAQ
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Column (2 cols) */}
+          <div className="lg:col-span-2">
+            <p className="font-mono text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
+              Contact
+            </p>
+            <div className="mt-4 space-y-3 text-sm">
               <a
                 href="tel:+919588699836"
-                className="block text-sm font-medium text-gray-700 transition hover:text-cyan-600 dark:text-gray-300 dark:hover:text-cyan-400"
+                className="block font-semibold text-slate-800 transition hover:text-cyan-600 dark:text-slate-200 dark:hover:text-cyan-400"
               >
                 +91 95886 99836
               </a>
 
               <a
                 href="mailto:training.support@iamcybersoldier.com"
-                className="block break-all text-sm font-medium text-gray-700 transition hover:text-cyan-600 dark:text-gray-300 dark:hover:text-cyan-400"
+                className="block break-all text-xs text-slate-600 transition hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400"
               >
                 training.support@iamcybersoldier.com
               </a>
+
+              <p className="pt-2 text-xs text-slate-500">
+                Trainer: Ankita Saraf (Ph.D. Cyber Security)
+              </p>
             </div>
           </div>
-
         </div>
 
-        {/* Bottom */}
-        <div className="mt-10 flex flex-col gap-3 border-t border-gray-200 pt-6 text-xs font-medium text-gray-600 transition-colors duration-500 sm:flex-row sm:items-center sm:justify-between dark:border-white/10 dark:text-gray-400">
-
-          <p>
-            © {new Date().getFullYear()} I AM CYBER SOLDIER. All rights reserved.
-          </p>
-
-          <p>
-            Cyber Security Training
-          </p>
-
+        {/* Bottom Sub-footer */}
+        <div className="mt-12 flex flex-col gap-3 border-t border-slate-200 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between dark:border-white/10 dark:text-slate-500">
+          <p>© {currentYear} I AM CYBER SOLDIER. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <span>Cyber Security Industrial Training &amp; Internship</span>
+            <span>•</span>
+            <a href="#home" className="transition-colors duration-200 hover:text-cyan-600 dark:hover:text-cyan-400">
+              Back to Top ↑
+            </a>
+          </div>
         </div>
-
       </div>
-
     </footer>
   )
 }
